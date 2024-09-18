@@ -1,0 +1,4 @@
+(fp_lib_table
+  (version 7)
+  (lib (name "MyLibrary")(type "KiCad")(uri "C:/Users/andreas pc/Documents/GitHub/Projekt-2/lib/Kicad")(options "")(descr ""))
+)
