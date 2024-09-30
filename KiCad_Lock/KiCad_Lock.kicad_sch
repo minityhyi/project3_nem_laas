@@ -9,7 +9,7 @@
 			(exclude_from_sim no)
 			(in_bom yes)
 			(on_board yes)
-			(property "Reference" "U"
+			(property "Reference" "U2"
 				(at 8.89 6.35 0)
 				(effects
 					(font
@@ -17,8 +17,8 @@
 					)
 				)
 			)
-			(property "Value" ""
-				(at 0 0 0)
+			(property "Value" "~"
+				(at 12.7 6.35 0)
 				(effects
 					(font
 						(size 1.27 1.27)
@@ -310,7 +310,7 @@
 						(type background)
 					)
 				)
-				(text "ULN2003 Motor Driver"
+				(text "ULN2003 Driver Board"
 					(at 12.7 3.81 0)
 					(effects
 						(font
@@ -1610,7 +1610,7 @@
 	)
 	(wire
 		(pts
-			(xy 176.53 115.57) (xy 181.61 115.57)
+			(xy 177.8 115.57) (xy 181.61 115.57)
 		)
 		(stroke
 			(width 0)
@@ -1620,7 +1620,7 @@
 	)
 	(wire
 		(pts
-			(xy 160.02 88.9) (xy 166.37 88.9)
+			(xy 158.75 88.9) (xy 161.29 88.9)
 		)
 		(stroke
 			(width 0)
@@ -1630,7 +1630,7 @@
 	)
 	(wire
 		(pts
-			(xy 166.37 88.9) (xy 166.37 82.55)
+			(xy 161.29 88.9) (xy 161.29 81.28)
 		)
 		(stroke
 			(width 0)
@@ -1640,7 +1640,7 @@
 	)
 	(wire
 		(pts
-			(xy 189.23 101.6) (xy 191.77 101.6)
+			(xy 190.5 101.6) (xy 193.04 101.6)
 		)
 		(stroke
 			(width 0)
@@ -1650,7 +1650,7 @@
 	)
 	(wire
 		(pts
-			(xy 191.77 101.6) (xy 191.77 106.68)
+			(xy 193.04 101.6) (xy 193.04 106.68)
 		)
 		(stroke
 			(width 0)
@@ -1660,7 +1660,7 @@
 	)
 	(wire
 		(pts
-			(xy 132.08 106.68) (xy 124.46 106.68)
+			(xy 130.81 106.68) (xy 128.27 106.68)
 		)
 		(stroke
 			(width 0)
@@ -1670,7 +1670,7 @@
 	)
 	(wire
 		(pts
-			(xy 176.53 111.76) (xy 176.53 115.57)
+			(xy 177.8 111.76) (xy 177.8 115.57)
 		)
 		(stroke
 			(width 0)
@@ -1680,7 +1680,7 @@
 	)
 	(wire
 		(pts
-			(xy 191.77 106.68) (xy 201.93 106.68)
+			(xy 193.04 106.68) (xy 200.66 106.68)
 		)
 		(stroke
 			(width 0)
@@ -1690,7 +1690,7 @@
 	)
 	(wire
 		(pts
-			(xy 160.02 101.6) (xy 166.37 101.6)
+			(xy 158.75 101.6) (xy 167.64 101.6)
 		)
 		(stroke
 			(width 0)
@@ -1710,7 +1710,7 @@
 	)
 	(wire
 		(pts
-			(xy 189.23 104.14) (xy 198.12 104.14)
+			(xy 190.5 104.14) (xy 198.12 104.14)
 		)
 		(stroke
 			(width 0)
@@ -1720,7 +1720,7 @@
 	)
 	(wire
 		(pts
-			(xy 189.23 93.98) (xy 193.04 93.98)
+			(xy 190.5 93.98) (xy 193.04 93.98)
 		)
 		(stroke
 			(width 0)
@@ -1740,7 +1740,7 @@
 	)
 	(wire
 		(pts
-			(xy 160.02 93.98) (xy 166.37 93.98)
+			(xy 158.75 93.98) (xy 167.64 93.98)
 		)
 		(stroke
 			(width 0)
@@ -1770,7 +1770,7 @@
 	)
 	(wire
 		(pts
-			(xy 124.46 106.68) (xy 124.46 116.84)
+			(xy 128.27 106.68) (xy 128.27 116.84)
 		)
 		(stroke
 			(width 0)
@@ -1780,7 +1780,7 @@
 	)
 	(wire
 		(pts
-			(xy 201.93 106.68) (xy 201.93 104.14)
+			(xy 200.66 106.68) (xy 200.66 104.14)
 		)
 		(stroke
 			(width 0)
@@ -1810,7 +1810,7 @@
 	)
 	(wire
 		(pts
-			(xy 189.23 96.52) (xy 195.58 96.52)
+			(xy 190.5 96.52) (xy 195.58 96.52)
 		)
 		(stroke
 			(width 0)
@@ -1820,7 +1820,7 @@
 	)
 	(wire
 		(pts
-			(xy 160.02 99.06) (xy 166.37 99.06)
+			(xy 158.75 99.06) (xy 167.64 99.06)
 		)
 		(stroke
 			(width 0)
@@ -1850,7 +1850,17 @@
 	)
 	(wire
 		(pts
-			(xy 189.23 99.06) (xy 201.93 99.06)
+			(xy 200.66 104.14) (xy 201.93 104.14)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "e9856a23-f91b-40ac-a7e8-45a7174e7e87")
+	)
+	(wire
+		(pts
+			(xy 190.5 99.06) (xy 201.93 99.06)
 		)
 		(stroke
 			(width 0)
@@ -1860,7 +1870,7 @@
 	)
 	(wire
 		(pts
-			(xy 173.99 111.76) (xy 173.99 116.84)
+			(xy 175.26 111.76) (xy 175.26 113.03)
 		)
 		(stroke
 			(width 0)
@@ -1870,7 +1880,7 @@
 	)
 	(wire
 		(pts
-			(xy 160.02 96.52) (xy 166.37 96.52)
+			(xy 158.75 96.52) (xy 167.64 96.52)
 		)
 		(stroke
 			(width 0)
@@ -1878,9 +1888,135 @@
 		)
 		(uuid "fa105875-e2d9-4270-85a6-ef1592aa3540")
 	)
+	(rectangle
+		(start 196.85 87.63)
+		(end 214.63 107.95)
+		(stroke
+			(width 0)
+			(type dash)
+		)
+		(fill
+			(type none)
+		)
+		(uuid 4f45ea74-68a7-48ed-95f7-46fffd4dcabe)
+	)
+	(rectangle
+		(start 125.73 72.39)
+		(end 163.83 130.81)
+		(stroke
+			(width 0)
+			(type dash)
+			(color 0 0 255 1)
+		)
+		(fill
+			(type none)
+		)
+		(uuid b3825ec2-f69d-4c03-895e-476306bc85ef)
+	)
+	(rectangle
+		(start 167.64 82.55)
+		(end 191.77 116.84)
+		(stroke
+			(width 0)
+			(type dash)
+			(color 0 0 255 1)
+		)
+		(fill
+			(type none)
+		)
+		(uuid e89e05e9-5def-492f-b6b9-783321ad220b)
+	)
+	(text "Stepper Motor"
+		(exclude_from_sim no)
+		(at 204.47 90.17 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+				(color 0 0 255 1)
+			)
+		)
+		(uuid "4f3ab804-2c1b-4285-86f1-522dfd40020a")
+	)
+	(text "B"
+		(exclude_from_sim no)
+		(at 208.28 93.98 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+				(color 0 132 0 1)
+			)
+		)
+		(uuid "5b2b9771-590f-41ea-822a-e9f435d9e7ae")
+	)
+	(text "D"
+		(exclude_from_sim no)
+		(at 201.93 105.41 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+				(color 0 132 0 1)
+			)
+		)
+		(uuid "95723e49-8a18-489c-96fc-2031cbbcac53")
+	)
+	(text "Driver Board"
+		(exclude_from_sim no)
+		(at 175.26 85.09 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+				(color 0 0 255 1)
+			)
+		)
+		(uuid "a5361e85-ebb8-469c-8aef-125cd23b70a8")
+	)
+	(text "5V"
+		(exclude_from_sim no)
+		(at 200.66 95.25 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+				(color 0 132 0 1)
+			)
+		)
+		(uuid "a61084ae-5c8a-4537-9a1e-54689ce456d1")
+	)
+	(text "ESP32 ProS3"
+		(exclude_from_sim no)
+		(at 133.35 74.93 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+				(color 0 0 255 1)
+			)
+		)
+		(uuid "ae0719bc-72b4-4ba3-91ec-d53331bfa748")
+	)
+	(text "A"
+		(exclude_from_sim no)
+		(at 213.36 93.98 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+				(color 0 132 0 1)
+			)
+		)
+		(uuid "c82f3d29-fa4b-475c-8639-404db4a0f0da")
+	)
+	(text "C"
+		(exclude_from_sim no)
+		(at 200.66 100.33 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+				(color 0 132 0 1)
+			)
+		)
+		(uuid "eff691c7-cbe0-4ff3-acfc-f64fcf1bdd11")
+	)
 	(symbol
 		(lib_id "Andreas_Library:ULN2003_Driver_Module")
-		(at 166.37 93.98 0)
+		(at 167.64 93.98 0)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -1888,7 +2024,7 @@
 		(dnp no)
 		(uuid "0571e54a-9d72-48ac-b48f-eb5cc545622c")
 		(property "Reference" "U2"
-			(at 175.26 87.63 0)
+			(at 176.53 87.63 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1896,7 +2032,7 @@
 			)
 		)
 		(property "Value" "~"
-			(at 179.07 87.63 0)
+			(at 180.34 87.63 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1904,7 +2040,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 166.37 93.98 0)
+			(at 167.64 93.98 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1913,7 +2049,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 166.37 93.98 0)
+			(at 167.64 93.98 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1922,7 +2058,7 @@
 			)
 		)
 		(property "Description" ""
-			(at 166.37 93.98 0)
+			(at 167.64 93.98 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1974,7 +2110,7 @@
 	)
 	(symbol
 		(lib_id "power:+5V")
-		(at 166.37 82.55 0)
+		(at 161.29 81.28 0)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -1983,7 +2119,7 @@
 		(fields_autoplaced yes)
 		(uuid "0c0747d7-1e65-428b-b06e-b996c3bc15d1")
 		(property "Reference" "#PWR04"
-			(at 166.37 86.36 0)
+			(at 161.29 85.09 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1992,7 +2128,7 @@
 			)
 		)
 		(property "Value" "+5V"
-			(at 166.37 77.47 0)
+			(at 161.29 76.2 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2000,7 +2136,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 166.37 82.55 0)
+			(at 161.29 81.28 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2009,7 +2145,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 166.37 82.55 0)
+			(at 161.29 81.28 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2018,7 +2154,7 @@
 			)
 		)
 		(property "Description" "Power symbol creates a global label with name \"+5V\""
-			(at 166.37 82.55 0)
+			(at 161.29 81.28 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2040,7 +2176,7 @@
 	)
 	(symbol
 		(lib_id "ProS3:ProS3")
-		(at 146.05 104.14 0)
+		(at 144.78 104.14 0)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -2048,7 +2184,7 @@
 		(dnp no)
 		(uuid "1a8d58e9-3af0-4cd8-bbb0-8ea97fbfd0ba")
 		(property "Reference" "U1"
-			(at 146.05 74.93 0)
+			(at 144.78 74.93 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2056,7 +2192,7 @@
 			)
 		)
 		(property "Value" "ProS3"
-			(at 146.05 77.47 0)
+			(at 144.78 77.47 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2064,7 +2200,7 @@
 			)
 		)
 		(property "Footprint" "AndreasLibrary:ESP32-PROS3"
-			(at 145.542 97.282 0)
+			(at 144.272 97.282 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2073,7 +2209,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 145.542 97.282 0)
+			(at 144.272 97.282 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2082,7 +2218,7 @@
 			)
 		)
 		(property "Description" ""
-			(at 146.05 104.14 0)
+			(at 144.78 104.14 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2203,7 +2339,7 @@
 	)
 	(symbol
 		(lib_id "power:GND")
-		(at 124.46 116.84 0)
+		(at 128.27 116.84 0)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -2212,7 +2348,7 @@
 		(fields_autoplaced yes)
 		(uuid "55593f4a-ac05-45af-aeb0-c12c1414dd56")
 		(property "Reference" "#PWR03"
-			(at 124.46 123.19 0)
+			(at 128.27 123.19 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2221,7 +2357,7 @@
 			)
 		)
 		(property "Value" "GND"
-			(at 124.46 121.92 0)
+			(at 128.27 121.92 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2229,7 +2365,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 124.46 116.84 0)
+			(at 128.27 116.84 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2238,7 +2374,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 124.46 116.84 0)
+			(at 128.27 116.84 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2247,7 +2383,7 @@
 			)
 		)
 		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
-			(at 124.46 116.84 0)
+			(at 128.27 116.84 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2269,7 +2405,7 @@
 	)
 	(symbol
 		(lib_id "power:GND")
-		(at 173.99 116.84 0)
+		(at 175.26 113.03 0)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -2278,7 +2414,7 @@
 		(fields_autoplaced yes)
 		(uuid "7396c18c-04f5-4c02-a418-b5d6d8a35db4")
 		(property "Reference" "#PWR02"
-			(at 173.99 123.19 0)
+			(at 175.26 119.38 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2287,7 +2423,7 @@
 			)
 		)
 		(property "Value" "GND"
-			(at 173.99 121.92 0)
+			(at 175.26 118.11 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2295,7 +2431,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 173.99 116.84 0)
+			(at 175.26 113.03 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2304,7 +2440,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 173.99 116.84 0)
+			(at 175.26 113.03 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2313,7 +2449,7 @@
 			)
 		)
 		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
-			(at 173.99 116.84 0)
+			(at 175.26 113.03 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2341,7 +2477,6 @@
 		(in_bom yes)
 		(on_board yes)
 		(dnp no)
-		(fields_autoplaced yes)
 		(uuid "b4a447c5-a6f7-44f1-aaa5-756bf267ae32")
 		(property "Reference" "#PWR01"
 			(at 181.61 119.38 0)
@@ -2353,7 +2488,7 @@
 			)
 		)
 		(property "Value" "+5V"
-			(at 181.61 110.49 0)
+			(at 184.15 113.03 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2407,10 +2542,9 @@
 		(in_bom yes)
 		(on_board yes)
 		(dnp no)
-		(fields_autoplaced yes)
 		(uuid "fb9e95b2-78f3-4e7a-9034-e82b098f0d14")
 		(property "Reference" "M1"
-			(at 214.63 99.352 0)
+			(at 215.9 93.98 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2419,7 +2553,7 @@
 			)
 		)
 		(property "Value" "Stepper_Motor_unipolar_5pin"
-			(at 214.63 101.892 0)
+			(at 215.9 96.52 0)
 			(effects
 				(font
 					(size 1.27 1.27)
