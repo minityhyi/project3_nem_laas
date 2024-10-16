@@ -11,6 +11,8 @@ _BUTTON_CHAR_UUID = bluetooth.UUID(0x2A4B)
 _CHAR_PROP_WRITE = const(0x08)
 _ADV_INTERVAL_US = const(25000)
 
+AUTHORIZED_MAC = b'\x94\xb9~kI\xc2'
+
 class BLEPeripheral:
     def __init__(self):
         self.service = aioble.Service(_ENV_SENSE_UUID)
@@ -26,8 +28,16 @@ class BLEPeripheral:
                 services=[_ENV_SENSE_UUID],
                 appearance=_CHAR_PROP_WRITE
             ) as connection:
-				print("Connection from", connection.device)
-				await connection.disconnected(timeout_ms=None)
+                
+                client_mac = connection.device.addr
+                
+                print(f"Attempting connection from MAC: {client_mac}")
+                
+                if client_mac == AUTHORIZED_MAC:
+                    print(f"Authorized client {client_mac} connected")
+                    await connection.disconnected(timeout_ms=None)
+                else:
+                    print(f"Unauthorized client {client_mac} tried to connect. Disconnecting...")
     
     async def receive(self):
         """Handle BLE write commands"""
@@ -49,5 +59,7 @@ async def main():
     await asyncio.gather(t1, t2)
     
 asyncio.run(main())
+
+
 
 
