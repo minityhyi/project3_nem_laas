@@ -2,9 +2,9 @@ import uasyncio as asyncio
 from machine import Pin
 import aioble
 import bluetooth
-from neopixel import NeoPixel
-from time import sleep
+import time
 import door
+
 
 _ENV_SENSE_UUID = bluetooth.UUID(0x2BA1)
 _BUTTON_CHAR_UUID = bluetooth.UUID(0x2A4B)
@@ -12,6 +12,7 @@ _CHAR_PROP_WRITE = const(0x08)
 _ADV_INTERVAL_US = const(25000)
 
 AUTHORIZED_MAC = b'\x94\xb9~kI\xc2'
+LOG_FILE = "door_lock_log.csv"
 
 class BLEPeripheral:
     def __init__(self):
@@ -51,6 +52,19 @@ class BLEPeripheral:
         """Process received commands and control motor."""
         if command == "run":
             door.step_motor(512, 0.001)
+            self.log_activation()
+            
+    def log_activation(self):
+        timestamp = time.localtime()
+        timestamp_str = timestamp_str = f"{timestamp[0]}-{timestamp[1]:02}-{timestamp[2]:02} {timestamp[3]:02}:{timestamp[4]:02}:{timestamp[5]:02}"
+        action = "Lock Activated"
+        try:
+            with open(LOG_FILE, 'a') as f:
+                if f.tell() == 0:
+                    f.write(f"{timestamp_str},{action}\n")
+                f.write(f"{timestamp_str},{action}\n")
+        except OSError as e:
+            print("Error writing to log file:", e)
             
 async def main():
     ble = BLEPeripheral()
@@ -59,6 +73,9 @@ async def main():
     await asyncio.gather(t1, t2)
     
 asyncio.run(main())
+
+
+
 
 
 
