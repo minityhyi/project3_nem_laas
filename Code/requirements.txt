@@ -1,0 +1,5 @@
+Flask==2.3.2  # Latest stable version
+Werkzeug==2.3.3  # Latest compatible version
+mysqlclient==2.1.0
+mysql-connector-python==8.0.33
+
