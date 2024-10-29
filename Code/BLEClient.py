@@ -8,6 +8,7 @@ from machine import Pin
 # Define the UUIDs to match the server's UUIDs
 _ENV_SENSE_UUID = bluetooth.UUID(0x2BA1)
 _BUTTON_CHAR_UUID = bluetooth.UUID(0x2A4B)
+_LOCK_STATE_CHAR_UUID = bluetooth.UUID(0x2A5B)
 
 button_pin = Pin(26, Pin.IN, Pin.PULL_UP)
 
@@ -16,6 +17,7 @@ class BLEClient:
         self.device = None
         self.connection = None
         self.button_characteristic = None
+        self.lock_state_characteristic = None
 
     async def connect(self, device):
         try:
@@ -30,9 +32,16 @@ class BLEClient:
             print("Discovering services...")
             env_service = await self.connection.service(_ENV_SENSE_UUID)
             self.button_characteristic = await env_service.characteristic(_BUTTON_CHAR_UUID)
+            self.lock_state_characteristic = await env_service.characteristic(_LOCK_STATE_CHAR_UUID)
+            
+            await self.lock_state_characteristic.subscribe(self.handle_lock_state_notification)
         except asyncio.TimeoutError:
             print("Timeout discovering services/characteristics")
             return
+        
+    async def handle_lock_state_notifications(self, value):
+		state = value.decode('utf-8')
+		print(f"Lock state updated: {state}")
 
     async def send_command(self, command):
 		try:
@@ -109,9 +118,3 @@ async def main():
     await client.disconnect()
 # Run the main function
 asyncio.run(main())
-
-
-
-
-
-

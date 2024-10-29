@@ -31,7 +31,7 @@ class FlaskApp:
 
     def get_db_connection():
         connection = mysql.connector.connect(
-            user='root'
+            user='root',
             password='',
             host='35.228.218.138',
             database='userdata'
@@ -73,8 +73,9 @@ class FlaskApp:
             except Exception as e:
                 return jsonify({"error": str(e)}), 500
 
-    def run(self, host='0.0.0.0', port=5000):
-        self.app.run(host=host, port=port)
+    def run(self):
+        port = int(os.environ.get("PORT", 8000))
+        self.app.run(host='0.0.0.0', port=port)
 
 if __name__=='__main__':
     flask_app = FlaskApp()
