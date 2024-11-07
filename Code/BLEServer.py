@@ -8,17 +8,16 @@ import wifi
 import urequests
 import sys
 import select
-
-#_DOOR_LOCK_UUID = bluetooth.UUID(0x0708)
+#DOOR_LOCK_UUID = bluetooth.UUID(0x0708)
 _ENV_SENSE_UUID = bluetooth.UUID(0x2BA1)
 _BUTTON_CHAR_UUID = bluetooth.UUID(0x2A4B)
 _CHAR_PROP_WRITE = const(0x08)
 _ADV_INTERVAL_US = const(25000)
 _LOCK_STATE_CHAR_UUID = bluetooth.UUID(0x2A5B)
 
-'''AUTHORIZED_MAC = b'\x94\xb9~kI\xc2'
-WIFI_SSID = "Licensmanden"
-WIFI_PASS = "JbpSg10iN"'''
+#AUTHORIZED_MAC = b'\x94\xb9\xkI\xc2
+#WIFI_SSID = "Licensmanden"
+#WIFI_PASS = "JbpSg10iN"
 
 SETTINGS_FILE = "settings.txt"
 LOG_FILE = "door_lock_log.csv"
@@ -45,8 +44,8 @@ class Config:
             print("No settings file found. Using default values.")
                 
             self.settings = {
-                'wifi_ssid': 'ittek#1_2.4G',
-                'wifi_pass': 'MaaGodt*7913',
+                'wifi_ssid': 'Licensmanden',
+                'wifi_pass': 'JbpSg10iN',
                 'authorized_mac': bytes.fromhex('94b97e6b49c2'),
                 'advertising_name': 'Andreas-write'
             }
@@ -76,6 +75,8 @@ class BLEPeripheral:
         aioble.register_services(self.service)
         self.load_configuration()
         self.current_direction = 1
+        self.lock_state_char = aioble.Characteristic(self.service, _LOCK_STATE_CHAR_UUID, notify=True)
+
         
     async def advertise(self):
         """Start BLE advertising"""
@@ -164,20 +165,18 @@ class BLEPeripheral:
                 print("Wi-Fi disconnected. Re-enabling BLE advertising..")
                 
             await asyncio.sleep(UPLOAD_INTERVAL)
-
-
-    
+   
     async def process_command(self, command):
         """Process received commands and control motor."""
         if command == "run":
             if self.current_direction == 1:
-                door.step_motor(100, 0.001, door.seq_clockwise)
+                door.step_motor(212, 0.001, door.seq_clockwise)
+                self.current_direction = -1
+                await self.lock_state_char.notify("Locked")
             else:
-                door.step_motor(100, 0.001, door.seq_counterclockwise)
-            
-            self.current_direction*= -1
-        else:
-            print("Unknown command received.")
+                door.step_motor(212, 0.001, door.seq_counter_clockwise)
+                self.current_direction = 1
+                await self.lock_state_char.notify("Unlocked")
             self.log_activation()
             
     def log_activation(self):
@@ -212,3 +211,11 @@ async def main():
     await asyncio.gather(t1, t2, t3)
     
 asyncio.run(main())
+
+
+
+
+
+
+
+
