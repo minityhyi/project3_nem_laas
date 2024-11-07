@@ -8,8 +8,9 @@ import wifi
 import urequests
 import sys
 import select
-#DOOR_LOCK_UUID = bluetooth.UUID(0x0708)
+#_DOOR_LOCK_UUID = bluetooth.UUID(0x0708)
 #_PUSH_BUTTON_UUID = bluetooth.UUID(0x04CC)
+#_MESSAGE_NOTIFICATION_SERVER_UUID = bluetooth.UUID(0x1133)
 _ENV_SENSE_UUID = bluetooth.UUID(0x2BA1)
 _BUTTON_CHAR_UUID = bluetooth.UUID(0x2A4B)
 _CHAR_PROP_WRITE = const(0x08)
