@@ -9,6 +9,7 @@ import urequests
 import sys
 import select
 
+
 _ENV_SENSE_UUID = bluetooth.UUID(0x2BA1)
 _BUTTON_CHAR_UUID = bluetooth.UUID(0x2A4B)
 _CHAR_PROP_WRITE = const(0x08)

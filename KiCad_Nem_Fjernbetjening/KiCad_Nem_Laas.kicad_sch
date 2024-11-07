@@ -1468,7 +1468,7 @@
 	)
 	(rectangle
 		(start 148.59 100.076)
-		(end 168.402 121.666)
+		(end 168.91 121.666)
 		(stroke
 			(width 0)
 			(type dash)
@@ -1867,7 +1867,7 @@
 			(uuid "05cb0d5c-655f-4984-a739-5410dcba3436")
 		)
 		(instances
-			(project ""
+			(project "KiCad_Nem_Laas"
 				(path "/abedad2c-7a3c-4ea6-88b7-a9efc4ad83a1"
 					(reference "SW1")
 					(unit 1)
@@ -2000,7 +2000,7 @@
 			(uuid "2236ac84-91c7-49e5-b163-cd65b15ea292")
 		)
 		(instances
-			(project ""
+			(project "KiCad_Nem_Laas"
 				(path "/abedad2c-7a3c-4ea6-88b7-a9efc4ad83a1"
 					(reference "#PWR02")
 					(unit 1)

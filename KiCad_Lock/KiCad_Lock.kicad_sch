@@ -2544,7 +2544,7 @@
 		(dnp no)
 		(uuid "fb9e95b2-78f3-4e7a-9034-e82b098f0d14")
 		(property "Reference" "M1"
-			(at 215.9 93.98 0)
+			(at 193.04 107.95 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2553,7 +2553,7 @@
 			)
 		)
 		(property "Value" "Stepper_Motor_unipolar_5pin"
-			(at 215.9 96.52 0)
+			(at 193.04 110.49 0)
 			(effects
 				(font
 					(size 1.27 1.27)
