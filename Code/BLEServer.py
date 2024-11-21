@@ -15,7 +15,7 @@ _ENV_SENSE_UUID = bluetooth.UUID(0x2BA1)
 _BUTTON_CHAR_UUID = bluetooth.UUID(0x2A4B)
 _CHAR_PROP_WRITE = const(0x08)
 _ADV_INTERVAL_US = const(25000)
-_LOCK_STATE_CHAR_UUID = bluetooth.UUID(0x2A5B)
+_LOCK_STATE_CHAR_UUID = bluetooth.UUID(0x1133)
 
 #AUTHORIZED_MAC = b'\x94\xb9\xkI\xc2
 #WIFI_SSID = "Licensmanden"
@@ -26,10 +26,12 @@ LOG_FILE = "door_lock_log.csv"
 UPLOAD_INTERVAL = 12 * 60 * 60
 
 
+
 class Config:
     def __init__(self):
         self.settings = {}
         self.load_settings()
+        self.BLEconnection = None
         
     def load_settings(self):
         try:
@@ -38,6 +40,7 @@ class Config:
                     key, value = line.strip().split('=')
                     if key == 'authorized_mac':
                         self.settings[key] = bytes.fromhex(value)
+                        print(value)
                     else:
                         self.settings[key] = value
                 print("Settings loaded:", self.settings)
@@ -48,7 +51,7 @@ class Config:
             self.settings = {
                 'wifi_ssid': 'Licensmanden',
                 'wifi_pass': 'JbpSg10iN',
-                'authorized_mac': bytes.fromhex('94b97e6b49c2'),
+                'authorized_mac': bytes.fromhex('70041dadd6'),
                 'advertising_name': 'Andreas-write'
             }
     
@@ -74,10 +77,11 @@ class BLEPeripheral:
         self.config = config	
         self.service = aioble.Service(_ENV_SENSE_UUID)
         self.button_char = aioble.Characteristic(self.service, _BUTTON_CHAR_UUID, write=True, capture=True)
+        self.lock_state_char = aioble.Characteristic(self.service, _LOCK_STATE_CHAR_UUID, notify=True, read=True)
         aioble.register_services(self.service)
         self.load_configuration()
         self.current_direction = 1
-        self.lock_state_char = aioble.Characteristic(self.service, _LOCK_STATE_CHAR_UUID, notify=True)
+        
 
         
     async def advertise(self):
@@ -89,12 +93,15 @@ class BLEPeripheral:
                 services=[_ENV_SENSE_UUID],
                 appearance=_CHAR_PROP_WRITE
             ) as connection:
+                self.BLEconnection = connection
                 
                 client_mac = connection.device.addr
                 
                 print(f"Attempting connection from MAC: {client_mac}")
                 
                 authorized_mac_bytes = self.config.settings['authorized_mac']
+                print(client_mac)
+                print(authorized_mac_bytes)
                 
                 if client_mac == authorized_mac_bytes:
                     print(f"Authorized client {client_mac} connected")
@@ -174,11 +181,17 @@ class BLEPeripheral:
             if self.current_direction == 1:
                 door.step_motor(212, 0.001, door.seq_clockwise)
                 self.current_direction = -1
-                await self.lock_state_char.notify("Locked")
+                try:
+                    await self.lock_state_char.write(b'Locked', send_update=True)
+                except:
+                    pass
             else:
                 door.step_motor(212, 0.001, door.seq_counter_clockwise)
                 self.current_direction = 1
-                await self.lock_state_char.notify("Unlocked")
+                try:
+                    await self.lock_state_char.write(b'Unlocked', send_update=True)
+                except:
+                    pass
             self.log_activation()
             
     def log_activation(self):
@@ -213,9 +226,6 @@ async def main():
     await asyncio.gather(t1, t2, t3)
     
 asyncio.run(main())
-
-
-
 
 
 
