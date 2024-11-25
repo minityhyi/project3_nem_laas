@@ -29,7 +29,7 @@ class FlaskApp:
         self.uploader = CSVUploader()
         self.app.add_url_rule('/upload', 'upload_file', self.upload_file, methods=['POST'])
 
-    def get_db_connection():
+    def get_db_connection(self):
         connection = mysql.connector.connect(
             user='root',
             password='',
@@ -58,11 +58,11 @@ class FlaskApp:
 
                     for row in csv_reader:
                         name = row.get('Name')
-                        address = row.get('Address')
+                        address = row.get('Adresse')
                         date_time = row.get('DateTime', datetime.now().strftime('%Y-%m-%d %H:%M:%S'))
                         
                         if name and address:
-                            query = "INSERT INTO LockUnit (Name, Address, DateTime) VALUES (%s, %s, %s)"
+                            query = "INSERT INTO LockUnit (Name, Adresse, DateTime) VALUES (%s, %s, %s)"
                             cursor.execute(query,(name, address, date_time))
                     
                     conn.commit()
@@ -74,7 +74,7 @@ class FlaskApp:
                 return jsonify({"error": str(e)}), 500
 
     def run(self):
-        port = int(os.environ.get("PORT", 8000))
+        port = int(os.environ.get("PORT", 8080))
         self.app.run(host='0.0.0.0', port=port)
 
 if __name__=='__main__':
