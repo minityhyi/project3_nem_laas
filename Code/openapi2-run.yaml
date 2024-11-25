@@ -1,0 +1,55 @@
+swagger: '2.0'
+info:
+  title: User Data Management API
+  description: API for managing user data on API Gateway with a Cloud Run backend
+  version: 1.0.0
+schemes:
+- https
+produces:
+- application/json
+x-google-backend:
+  address: https://flask-api-440844826796.europe-north1.run.app
+  protocol: h2
+
+paths:
+  /insert:
+    post:
+      summary: Insert user data
+      operationId: insertData
+      parameters:
+        - in: body
+          name: body
+          schema:
+            type: object
+            properties:
+              Name:
+                type: string
+                description: Name of the user
+              Adresse:
+                type: string
+                description: Address of the user
+            required:
+              - Name
+              - Adresse
+      responses:
+        '200':
+          description: Data inserted successfully
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+        '400':
+          description: Bad Request
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+        '500':
+          description: Server Error
+          schema:
+            type: object
+            properties:
+              error:
+                type: string

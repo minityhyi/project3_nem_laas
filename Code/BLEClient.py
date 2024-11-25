@@ -8,9 +8,11 @@ from machine import Pin
 # Define the UUIDs to match the server's UUIDs
 _ENV_SENSE_UUID = bluetooth.UUID(0x2BA1)
 _BUTTON_CHAR_UUID = bluetooth.UUID(0x2A4B)
-_LOCK_STATE_CHAR_UUID = bluetooth.UUID(0x2A5B)
+_LOCK_STATE_CHAR_UUID = bluetooth.UUID(0x1133)
 
-button_pin = Pin(26, Pin.IN, Pin.PULL_UP)
+button_pin = Pin(14, Pin.IN, Pin.PULL_DOWN)
+green_led = Pin(13, Pin.OUT)
+red_led = Pin(12, Pin.OUT)
 
 class BLEClient:
     def __init__(self):
@@ -34,25 +36,50 @@ class BLEClient:
             self.button_characteristic = await env_service.characteristic(_BUTTON_CHAR_UUID)
             self.lock_state_characteristic = await env_service.characteristic(_LOCK_STATE_CHAR_UUID)
             
-            await self.lock_state_characteristic.subscribe(self.handle_lock_state_notification)
+            await self.lock_state_characteristic.subscribe(notify=True)
+            #await self.lock_state_characteristic.subscribe(notify=True)
+            print("Subscribed to lock state characteristics")
+
         except asyncio.TimeoutError:
             print("Timeout discovering services/characteristics")
             return
         
     async def handle_lock_state_notifications(self, value):
-		state = value.decode('utf-8')
-		print(f"Lock state updated: {state}")
+        state = value.decode('utf-8')
+        print(f"Lock state updated: {state}")
+        if state =="Unlocked":
+            await self.blink_led(green_led)
+        elif state == "Locked":
+            await self.blink_led(red_led)
+    
+    async def blink_led(self, led, times=3, interval=0.5):
+        for _ in range(times):
+            led.value(1)
+            await asyncio.sleep(interval)
+            led.value(0)
+            await asyncio.sleep(interval)
 
     async def send_command(self, command):
-		try:
-			print(f"Sending command: {command}")
-			await self.button_characteristic.write(command.encode())
-		except asyncio.TimeoutError:
-			print("Timeout while sending command. Attempting to reconnect...")
-			await self.reconnect()
-		except asyncio.TypeError:
-			print("Typerror while sending command. Cant send command.")
-			
+        try:
+            print(f"Sending command: {command}")
+            await self.button_characteristic.write(command.encode())
+            data = await self.lock_state_characteristic.notified()
+            
+            state = data.decode('utf-8')
+            print(f"Received state: {state}")
+            
+            if state == "Unlocked":
+                await self.blink_led(green_led)
+            elif state == "Locked":
+                await self.blink_led(red_led)
+            
+            print (data)
+        except asyncio.TimeoutError:
+            print("Timeout while sending command. Attempting to reconnect...")
+            await self.reconnect()
+        except asyncio.TypeError:
+            print("Cant send command")
+
 
     async def disconnect(self):
         if self.connection:
@@ -84,7 +111,7 @@ async def button_monitor(client):
     while True:
         current_state = button_pin.value()
         
-        if current_state == 0 and last_button_state == 1:
+        if current_state == 1 and last_button_state == 0:
             print ("Button Pressed")
             await client.send_command("run")
             print("Run command sent")
@@ -118,3 +145,9 @@ async def main():
     await client.disconnect()
 # Run the main function
 asyncio.run(main())
+
+
+
+
+
+
