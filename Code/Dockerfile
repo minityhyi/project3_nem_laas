@@ -19,5 +19,6 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Expose port 8080 to match Cloud Run's default
 EXPOSE 8080
 
+
 # Run app.py when the container launches
 CMD ["python", "app.py"]

@@ -51,12 +51,8 @@ class Config:
             self.settings = {
                 'wifi_ssid': 'Licensmanden',
                 'wifi_pass': 'JbpSg10iN',
-<<<<<<< HEAD
                 'authorized_mac': bytes.fromhex('94b97e6b49c2'),
                 #Det rigtige advertising_name skal være NemLaas
-=======
-                'authorized_mac': bytes.fromhex('70041dadd6'),
->>>>>>> 9f3fe94b0b72390c5e33bfc6e45c06852a5d7148
                 'advertising_name': 'Andreas-write'
             }
     

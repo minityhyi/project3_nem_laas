@@ -1,20 +1,44 @@
 from flask import Flask, request, jsonify
 import mysql.connector
 from datetime import datetime
-import os  # Import os to access environment variables
+import os
 
 app = Flask(__name__)
 
-# Database connection function
+# Function to test the database connection
+@app.route('/test-db-connection')
+def test_db_connection():
+    try:
+        # Establish a connection to the MySQL database
+        connection = mysql.connector.connect(
+            user='root',               # MySQL username
+            password='',               # MySQL password (empty string for no password)
+            host='35.228.218.138',     # Public IP of MySQL database
+            database='userdata'        # Your MySQL database name
+        )
+
+        # Create a cursor and run a simple query
+        cursor = connection.cursor()
+        cursor.execute("SELECT 1;")
+        result = cursor.fetchone()
+
+        # Return a successful response
+        return jsonify({"message": "Database connection successful", "result": result}), 200
+    except mysql.connector.Error as err:
+        # Return the error if the connection fails
+        return jsonify({"error": str(err)}), 500
+
+# Function to get a database connection
 def get_db_connection():
     connection = mysql.connector.connect(
         user='root',
-        password='',  # Since you don't use a password, leave this blank
-        host='35.228.218.138',
+        password='',
+        host="35.228.218.138",
         database='userdata'
     )
     return connection
 
+# Route for inserting data
 @app.route('/insert', methods=['POST'])
 def insert_data():
     try:
@@ -51,5 +75,4 @@ def insert_data():
 
 # Start the Flask server
 if __name__ == '__main__':
-    port = int(os.environ.get('PORT', 8080))  # Use the PORT environment variable
-    app.run(debug=True, host='0.0.0.0', port=port)
+    app.run(debug=True, host='0.0.0.0', port=8080)
