@@ -51,9 +51,9 @@ class Config:
             self.settings = {
                 'wifi_ssid': 'Licensmanden',
                 'wifi_pass': 'JbpSg10iN',
-                'authorized_mac': bytes.fromhex('94b97e6b49c2'),
-                #Det rigtige advertising_name skal være NemLaas
-                'advertising_name': 'Andreas-write'
+                'authorized_mac': bytes.fromhex('70041dadd6'),
+                'advertising_name': 'Andreas-write',
+                'device_id': 'lock123'
             }
     
     def save_settings(self):
@@ -70,6 +70,7 @@ class Config:
         self.settings['wifi_pass'] = input("Enter Wi-Fi Pass: ")
         self.settings['authorized_mac'] = input("Enter Authorized MAC Address: ")
         self.settings['advertising_name'] = input("Enter advertising name: ")
+        self.settings['device_id'] = input("Enter Device ID: ")
         self.save_settings()
 
 
@@ -115,6 +116,7 @@ class BLEPeripheral:
         print(f"SSID: {self.config.settings['wifi_ssid']}")
         print(f"Authorized MAC: {self.config.settings['authorized_mac']}")
         print(f"Advertising Name: {self.config.settings['advertising_name']}")
+        print(f"Device ID: {self.config.settings['device_id']}")
     
     async def wait_for_enter(self, timeout):
         print("Press Enter within {} seconds to configure settings...".format(timeout))
@@ -156,10 +158,12 @@ class BLEPeripheral:
                     ).format(boundary, csv_data)
 
                     headers = {
-                        'Content-Type': 'multipart/form-data; boundary={}'.format(boundary)
+                        'Content-Type': f'multipart/form-data; boundary={boundary}'
+						'Device-ID': DEVICE_ID
                     }
                     
-                    url = "http://192.168.99.123:5000/upload"
+                    url = "http://192.168.99.145:8080/upload"
+                    files = {'file': ('door_lock_log.csv', csv_data, 'text/csv')}  # field 'file' with the file content
                         
                     response = urequests.post(url, data=multipart_data, headers=headers)
                     print(f"Server response: {response.status_code}")
@@ -198,12 +202,15 @@ class BLEPeripheral:
     def log_activation(self):
         timestamp = time.localtime()
         timestamp_str = f"{timestamp[0]}-{timestamp[1]:02}-{timestamp[2]:02} {timestamp[3]:02}:{timestamp[4]:02}:{timestamp[5]:02}"
-        action = "Lock Activated"
+        
+        device_id = self.config.settings.get("device_id", "Unknown")
+        
         try:
             with open(LOG_FILE, 'a') as f:
                 if f.tell() == 0:
-                    f.write(f"{timestamp_str},{action}\n")
-                f.write(f"{timestamp_str},{action}\n")
+                    f.write("timestamp,device_id\n")
+                
+                f.write(f"{timestamp_str},{device_id}\n")
         except OSError as e:
             print("Error writing to log file:", e)
             
@@ -227,6 +234,8 @@ async def main():
     await asyncio.gather(t1, t2, t3)
     
 asyncio.run(main())
+
+
 
 
 

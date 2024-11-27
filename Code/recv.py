@@ -28,6 +28,7 @@ class FlaskApp:
         self.app = Flask(__name__)
         self.uploader = CSVUploader()
         self.app.add_url_rule('/upload', 'upload_file', self.upload_file, methods=['POST'])
+        self.device_id = None
 
     def get_db_connection(self):
         connection = mysql.connector.connect(
@@ -38,6 +39,21 @@ class FlaskApp:
         )
         return connection
     
+    def is_device_valid(self, device_id):
+        #Tjek om device ID eksisterer og er aktivt i DeviceRegistry table.
+        try:
+            conn = self.get_db_connection
+            cursor = conn.cursor()
+            query = "SELECT Status FROM DeviceRegistry WHERE DeviceID = %s"
+            cursor.execute(query, (device_id,))
+            result = cursor.fetchone()
+            cursor.close()
+            conn.close()
+            return result is not None and result[0] == 'active'
+        except Exception as e:
+            print(f"Error validating device ID: {e}")
+            return False
+    
     def upload_file(self):
 
         if 'file' not in request.files:
@@ -47,6 +63,13 @@ class FlaskApp:
 
         if file.filename == '':
             return jsonify({"error": "No selected file"}), 400
+        
+        device_id = request.headers.get('DeviceID')
+        if not self.device_id:
+            return jsonify({"error": "DeviceID is missing in the request headers"}), 400
+        
+        if not self.is_device_valid(device_id):
+            return jsonify({"error": "Invalid or inactive device ID"}), 403
 
         saved_file = self.uploader.save_file(file)
         if saved_file:
