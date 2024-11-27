@@ -110,7 +110,7 @@ class BLEPeripheral:
                     await connection.disconnected(timeout_ms=None)
                 else:
                     print(f"Unauthorized client {client_mac} tried to connect. Disconnecting...")
-    
+        
     def load_configuration(self):
         print("Current configuration:")
         print(f"SSID: {self.config.settings['wifi_ssid']}")
@@ -148,7 +148,9 @@ class BLEPeripheral:
                     with open(LOG_FILE, 'r') as f:
                         csv_data = f.read()
                         
+                    url = "http://172.20.10.7:8080/upload"
                     boundary = "----WebKitFormBoundary7MA4YWxkTrZu0gW"
+                    
                     multipart_data = (
                         "--{0}\r\n"
                         'Content-Disposition: form-data; name="file"; filename="door_lock_log.csv"\r\n'
@@ -158,12 +160,9 @@ class BLEPeripheral:
                     ).format(boundary, csv_data)
 
                     headers = {
-                        'Content-Type': f'multipart/form-data; boundary={boundary}'
-						'Device-ID': DEVICE_ID
+                        'Content-Type': f'multipart/form-data; boundary={boundary}',
+                        'DeviceID': str(self.config.settings['device_id'])
                     }
-                    
-                    url = "http://192.168.99.145:8080/upload"
-                    files = {'file': ('door_lock_log.csv', csv_data, 'text/csv')}  # field 'file' with the file content
                         
                     response = urequests.post(url, data=multipart_data, headers=headers)
                     print(f"Server response: {response.status_code}")
@@ -234,6 +233,9 @@ async def main():
     await asyncio.gather(t1, t2, t3)
     
 asyncio.run(main())
+
+
+
 
 
 

@@ -28,7 +28,6 @@ class FlaskApp:
         self.app = Flask(__name__)
         self.uploader = CSVUploader()
         self.app.add_url_rule('/upload', 'upload_file', self.upload_file, methods=['POST'])
-        self.device_id = None
 
     def get_db_connection(self):
         connection = mysql.connector.connect(
@@ -42,14 +41,14 @@ class FlaskApp:
     def is_device_valid(self, device_id):
         #Tjek om device ID eksisterer og er aktivt i DeviceRegistry table.
         try:
-            conn = self.get_db_connection
+            conn = self.get_db_connection()
             cursor = conn.cursor()
-            query = "SELECT Status FROM DeviceRegistry WHERE DeviceID = %s"
+            query = "SELECT DeviceID FROM DeviceRegistry WHERE DeviceID = %s"
             cursor.execute(query, (device_id,))
             result = cursor.fetchone()
             cursor.close()
             conn.close()
-            return result is not None and result[0] == 'active'
+            return result is not None
         except Exception as e:
             print(f"Error validating device ID: {e}")
             return False
@@ -65,29 +64,30 @@ class FlaskApp:
             return jsonify({"error": "No selected file"}), 400
         
         device_id = request.headers.get('DeviceID')
-        if not self.device_id:
+        if not device_id:
             return jsonify({"error": "DeviceID is missing in the request headers"}), 400
         
         if not self.is_device_valid(device_id):
-            return jsonify({"error": "Invalid or inactive device ID"}), 403
+            return jsonify({"error": "Invalid device ID"}), 403
 
         saved_file = self.uploader.save_file(file)
         if saved_file:
             try:
                 with open(saved_file, newline='') as csvfile:
                     csv_reader = csv.DictReader(csvfile)
+
                     conn = self.get_db_connection()
                     cursor = conn.cursor()
 
                     for row in csv_reader:
-                        name = row.get('Name')
-                        address = row.get('Adresse')
-                        date_time = row.get('DateTime', datetime.now().strftime('%Y-%m-%d %H:%M:%S'))
+                        device_id = row.get('device_id')
+                        timestamp = row.get('timestamp')
                         
-                        if name and address:
-                            query = "INSERT INTO LockUnit (Name, Adresse, DateTime) VALUES (%s, %s, %s)"
-                            cursor.execute(query,(name, address, date_time))
-                    
+                        if device_id and timestamp:
+                            device_id = int(device_id)
+                            query = "INSERT INTO Log (DeviceID, Timestamp) VALUES (%s, %s)"
+                            cursor.execute(query, (device_id, timestamp))
+                            
                     conn.commit()
                     cursor.close()
                     conn.close()
