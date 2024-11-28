@@ -1,8 +1,10 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, send_file
 import os
 import mysql.connector
 from datetime import datetime
 import csv
+from os.path import abspath
+from google.cloud import storage
 
 class CSVUploader:
     def __init__(self, upload_folder='uploads', allowed_extensions=None):
@@ -16,7 +18,6 @@ class CSVUploader:
         return '.' in filename and filename.rsplit('.', 1)[1].lower() in self.allowed_extensions
 
     def save_file(self, file):
-
         if file and self.allowed_file(file.filename):
                 filepath = os.path.join(self.upload_folder, file.filename)
                 file.save(filepath)
@@ -27,13 +28,14 @@ class FlaskApp:
     def __init__(self):
         self.app = Flask(__name__)
         self.uploader = CSVUploader()
-        self.app.add_url_rule('/upload', 'upload_file', self.upload_file, methods=['POST'])
+        self.app.add_url_rule('/insert', 'upload_file', self.upload_file, methods=['POST'])
+        self.app.add_url_rule('/extract', 'generate_csv', self.generate_csv, methods=['GET'])
 
     def get_db_connection(self):
         connection = mysql.connector.connect(
             user='root',
             password='',
-            host='35.228.218.138',
+            host='10.98.144.3',
             database='userdata'
         )
         return connection
@@ -95,10 +97,67 @@ class FlaskApp:
                 return jsonify({"message": "Data inserted successfully from CSV!"}), 200
             except Exception as e:
                 return jsonify({"error": str(e)}), 500
+    
+    def upload_to_gcs(self, filepath, bucket_name):
+        try:
+            client = storage.Client()
 
+            bucket = client.get_bucket(bucket_name)
+
+            blob = bucket.blob(os.path.basename(filepath))
+
+            blob.upload_from_filename(filepath)
+
+            return f"gs://{bucket_name}/{blob.name}"
+        
+        except Exception as e:
+            raise RuntimeError(f"Error uploading file to GCS: {e}")
+    
+    def generate_csv(self):
+        try:         
+            conn = self.get_db_connection()
+            cursor = conn.cursor()
+
+            query = """
+            SELECT
+                Log.DeviceID,
+                Log.Timestamp,
+                Users.Fullname,
+                Users.Address
+            FROM Log
+            JOIN DeviceRegistry ON Log.DeviceID = DeviceRegistry.DeviceID
+            JOIN Users ON DeviceRegistry.UserID = Users.UserID
+            """
+            cursor.execute(query)
+            rows = cursor.fetchall()
+            if not rows:
+                return jsonify({"error": "No data found"}), 404
+
+            filename = f"Log_Report_{datetime.now().strftime('%Y%m%d_%H%M%S')}.csv"
+            local_filepath = f"/tmp/{filename}"
+
+
+            with open (local_filepath, mode='w', newline='', encoding='utf-8') as file:
+                writer = csv.writer(file)
+                writer.writerow(["DeviceID", "Timestamp", "FullName", "Address"])
+                writer.writerows(rows)
+            
+            cursor.close()
+            conn.close()
+
+            bucket_name = "nemlaasbucket"
+            gcs_path = self.upload_to_gcs(local_filepath, bucket_name)
+
+            return jsonify({"message": f"File successfully uploaded to {gcs_path}"}), 200
+    
+        except Exception as e:
+            return jsonify({"error": str(e)}), 500
+        
     def run(self):
         port = int(os.environ.get("PORT", 8080))
         self.app.run(host='0.0.0.0', port=port)
+    
+
 
 if __name__=='__main__':
     flask_app = FlaskApp()
