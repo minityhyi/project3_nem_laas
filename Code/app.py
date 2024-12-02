@@ -5,6 +5,8 @@ from datetime import datetime
 import csv
 from os.path import abspath
 from google.cloud import storage
+from apscheduler.schedulers.background import BackgroundScheduler
+from apscheduler.events import EVENT_JOB_EXECUTED, EVENT_JOB_ERROR
 
 class CSVUploader:
     def __init__(self, upload_folder='uploads', allowed_extensions=None):
@@ -30,6 +32,8 @@ class FlaskApp:
         self.uploader = CSVUploader()
         self.app.add_url_rule('/insert', 'upload_file', self.upload_file, methods=['POST'])
         self.app.add_url_rule('/extract', 'generate_csv', self.generate_csv, methods=['GET'])
+        self.scheduler = BackgroundScheduler(daemon=True)
+        self.schedule_csv_generation()
 
     def get_db_connection(self):
         connection = mysql.connector.connect(
@@ -113,6 +117,11 @@ class FlaskApp:
         except Exception as e:
             raise RuntimeError(f"Error uploading file to GCS: {e}")
     
+    def schedule_csv_generation(self):
+        self.scheduler.add_job(self.generate_csv, 'interval', seconds=86400, id='csv_generation_job')
+        self.scheduler.start()
+    
+    
     def generate_csv(self):
         try:         
             conn = self.get_db_connection()
@@ -133,7 +142,7 @@ class FlaskApp:
             if not rows:
                 return jsonify({"error": "No data found"}), 404
 
-            filename = f"Log_Report_{datetime.now().strftime('%Y%m%d_%H%M%S')}.csv"
+            filename = f"Log_Report.csv"
             local_filepath = f"/tmp/{filename}"
 
 
