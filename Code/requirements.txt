@@ -3,3 +3,4 @@ Werkzeug==2.3.3  # Latest compatible version
 mysqlclient==2.1.0
 mysql-connector-python==8.0.33
 APScheduler==3.9.1
+google-cloud-storage==2.19.0
